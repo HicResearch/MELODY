@@ -63,14 +63,25 @@ The simplest deployment of a SuperNode is
 $ flower-supernode \
 --insecure \
 --superlink 127.0.0.1:9092 \
---clientappio-api-address 127.0.0.1:9095 \
---node-config "partition-id=1 num-partitions=1"
+--clientappio-api-address 127.0.0.1:9095
 ```
+
+This deployment would expect an insecure SuperNode to be listening on 127.0.0.1:9092 and is configuring the SuperNode to bind to port 9095.
+
+SuperNodes allow for localised configuration to be set when running a Supernode via the ``--node-config`` command line option. An example can be seen below:
+```
+--node-config partition-id=1 data-dir=/tmp/mydata/
+```
+This node config allows for instance specific values to be set that can then be referenced in the source code of the FML Job (See [Using Node Config](#NodeConfig)).
+
 
 ## Deploy Using Docker
 <!-- //WIP -->
 
 # Running a Job
+
+## <a name="NodeConfig"></a>Using Node Configurations
+## Using App Configurations
 
 # <a name="Auditing"></a>Auditing
 
