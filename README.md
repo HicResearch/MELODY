@@ -89,16 +89,33 @@ $ flwr new APP_SPEC
 A list of all available Apps can be found at [https://flower.ai/apps/](https://flower.ai/apps/).
 These can be used as a base to develop your FML Job.
 
+## Connecting To a SuperLink
+To connect to a specific SuperLink, you need to configure it in your local .flwr configuration.
+This configuration is ususally found at ``~/.flwr/config.toml`` but can also be found by running the command ``flwr config ls``.
 
+To add a new SuperLink at 1.1.1.1:9093 you would add the following to your .flwr config
+```
+[superlink.my_remote_deployment]
+address = "1.1.1.1:9093"
+insecure=true
+```
+
+This will now let you connect to the SuperLink by providing the friendly name `my_remote_deployment` when running a flower command, such as:
+```
+$flwr run my_job my_remote_deployment
+```
 
 ## <a name="NodeConfig"></a>Using Node Configurations
+Node configurations can be used to access SuperNode specific configurations, such as data locations.
+They are accessed in your Flower App via ```context.node_config["some_key"]```
+
 ## Using App Configurations
+App configurations are similar to Node Configurations, in that they can be used to make your app more generic.
+They are set in your ``.toml`` config and are accessed using ``context.run_config["some_key"]``
+
 
 # <a name="Auditing"></a>Auditing
-
-# Documentation
-
-<!-- //WIP -->
+<!-- WIP -->
 
 # Contributing
 
