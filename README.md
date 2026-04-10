@@ -76,9 +76,20 @@ This node config allows for instance specific values to be set that can then be 
 
 
 ## Deploy Using Docker
-<!-- //WIP -->
+An Example Docker Compose file is located in [docker/compose_example/compose.yml](./docker/compose_example/compose.yml)
 
 # Running a Job
+Flower Apps are used to enable FML.
+We recommend following one of the [Flower quickstart tutorials](https://flower.ai/docs/framework/tutorial-quickstart.html) to give you an understanding of how Flower Apps work.
+
+ A new app can be created by running the following command:
+```
+$ flwr new APP_SPEC
+```
+A list of all available Apps can be found at [https://flower.ai/apps/](https://flower.ai/apps/).
+These can be used as a base to develop your FML Job.
+
+
 
 ## <a name="NodeConfig"></a>Using Node Configurations
 ## Using App Configurations
