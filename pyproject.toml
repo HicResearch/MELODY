@@ -1,0 +1,10 @@
+[project]
+name = "melody"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "flwr==1.28.0",
+]
+[project.scripts]
+melody = "melody.cli:app"
