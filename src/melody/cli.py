@@ -8,11 +8,11 @@ from .pull import pull
 from .stop import stop
 
 app = typer.Typer()
-app.command()(run)
-app.command()(list)
-app.command()(log)
-app.command()(pull)
-app.command()(stop)
+app.command(help="Run a Flower App")(run)
+app.command(help="List the details of one provided run ID or all runs")(list)
+app.command(help="Get logs from a run")(log)
+app.command(help="Pull artifacts from a run")(pull)
+app.command(help="Stop a run")(stop)
 
 
 if __name__ == "__main__":
