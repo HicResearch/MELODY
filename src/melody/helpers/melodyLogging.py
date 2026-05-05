@@ -1,5 +1,7 @@
 import logging
 import os
+from ..config import configSetup
+
 def setupLogger():
     formatter = logging.Formatter(
         fmt='%(asctime)s - %(user)s - %(levelname)s - %(message)s',
@@ -9,7 +11,10 @@ def setupLogger():
     streamHandler = logging.StreamHandler()
     streamHandler.setFormatter(formatter)
 
-    fileHandler = logging.FileHandler('example1.log')
+    config = configSetup.getConfigFile()
+    logFile = config["logging"]["file"]
+
+    fileHandler = logging.FileHandler(logFile)
     fileHandler.setFormatter(formatter)
     fileHandler.setLevel(logging.DEBUG)
 

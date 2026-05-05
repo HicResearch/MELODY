@@ -10,17 +10,19 @@ def exists():
     return True
 
 
-def getConfigFile(configLocation):
-    configFile = toml.load(configLocation)
+def getConfigFile():
+    home = Path.home()
+    configFile = toml.load(str(home) + '/.mldy/config.toml')
     return configFile
 
 def createConfigFile():
     home = str(Path.home())
-    Path(home + "/.mldy").mkdir(parents=False,exist_ok=True)
+    Path(home + "\.mldy").mkdir(parents=False,exist_ok=True)
     config = """
-    [test]
-    """
-    with open(home + '/.mldy/config.toml','w') as configFile:
+[logging]
+    file = '{fileLocation}'
+    """.format(fileLocation=home + "\.mldy\melody.log")
+    with open(home + '/.mldy\config.toml','w') as configFile:
         configFile.write(config)
 
 
