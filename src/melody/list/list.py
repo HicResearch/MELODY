@@ -1,6 +1,7 @@
 from typing import Annotated, Any, Literal
 import subprocess
 import typer
+from ..helpers import melodyLogging
 
 def list(
         run_id: Annotated[
@@ -37,6 +38,7 @@ def list(
     if output_format is not "default":
         args.append("--format")
         args.append(output_format)
+    melodyLogging.log(args)
     with subprocess.Popen(args, stdout=subprocess.PIPE,
                           stderr=subprocess.STDOUT) as process:
         for line in process.stdout:
