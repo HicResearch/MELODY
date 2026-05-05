@@ -1,4 +1,5 @@
 import typer
+import sys
 
 from .melody import melody
 from .run import run
@@ -6,6 +7,10 @@ from .list import list
 from .log import log
 from .pull import pull
 from .stop import stop
+from .config import configSetup
+
+
+configSetup.setup()#TODO want to user override location if exists
 
 app = typer.Typer()
 app.command(help="Run a Flower App")(run)

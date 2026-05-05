@@ -1,10 +1,20 @@
 [project]
 name = "melody"
 version = "0.0.1"
+authors = [
+    {name="James Friel",email="jfriel001@dundee.ac.uk"}
+]
+description = "A wrapper for the Flower Framework to support use within Trusted Research Environments"
 readme = "README.md"
 requires-python = ">=3.7"
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
 dependencies = [
     "flwr==1.28.0",
 ]
 [project.scripts]
 melody = "melody.cli:app"
+
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
