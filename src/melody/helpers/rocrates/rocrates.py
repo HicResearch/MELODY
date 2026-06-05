@@ -1,3 +1,4 @@
+import datetime
 import getpass
 import uuid
 
@@ -56,7 +57,7 @@ def make_crate(app: str) -> None:
     config = configSetup.getConfigFile()
 
     crate = ROCrate()
-    output_dir = config["RO-Crates"]['outputDirectory']
+    output_dir = config["RO-Crates"]['outputDirectory'] + '/'+ datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 
     ##################
     # core metadata  #
@@ -170,9 +171,34 @@ def make_crate(app: str) -> None:
     )
     execution["agent"] = getpass.getuser()
 
+    #################
+    # write & check #
+    #################
+    crate.root_dataset.append_to("mentions", execution)  # TODO
+    # the output model is the focus of the crate
+    # crate.root_dataset["mainEntity"] = model_file  # TODO
+    # conforms to process run crate
+    process_run_crate = crate.add(
+        ContextEntity(
+            crate,
+            "https://w3id.org/ro/wfrun/process/0.5",
+            properties={
+                "name": "Process Run Crate",
+                "@type": "CreativeWork",
+                "version": "0.5",
+            },
+        )
+    )
+    crate.root_dataset.append_to("conformsTo", process_run_crate)
 
+    # Writing the RO-Crate metadata:
+    crate.write(output_dir)
 
-
+    # validate_crate(
+    #     output_dir,
+    #     profile_identifier="process-run-crate-0.5",
+    #     requirement_severity=models.Severity.RECOMMENDED,
+    # )
 
 
 if __name__ == "__main__":

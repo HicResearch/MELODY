@@ -3,7 +3,7 @@ import sys
 import logging
 
 from melody.helpers.rocrates.rocrates import make_crate
-from .melody import melody
+# from .melody import melody
 from .run import run
 from .list import list
 from .log import log

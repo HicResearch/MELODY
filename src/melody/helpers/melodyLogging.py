@@ -13,7 +13,7 @@ def setupLogger():
 
     config = configSetup.getConfigFile()
     logFile = config["logging"]["file"]
-
+    #TODO this isn't working with the ~
     fileHandler = logging.FileHandler(logFile)
     fileHandler.setFormatter(formatter)
     fileHandler.setLevel(logging.DEBUG)
