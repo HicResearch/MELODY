@@ -2,6 +2,8 @@ from typing import Annotated, Any, Literal
 import subprocess
 import typer
 from ..helpers import melodyLogging
+from ..helpers.rocrates.rocrates import make_crate
+
 
 def run(app: Annotated[
         str,
@@ -11,6 +13,8 @@ def run(app: Annotated[
         ),
     ] = "."):
     melodyLogging.log(["flwr", "run",app,"--stream"])
+    make_crate(app)
+    melodyLogging.log(["flwr", "run","--stream"])
     with subprocess.Popen(["flwr", "run",app,"--stream"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT) as process:
         for line in process.stdout:
             print(line.decode('utf8'))
