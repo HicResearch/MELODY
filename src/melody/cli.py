@@ -2,6 +2,7 @@ import typer
 import sys
 import logging
 
+from melody.helpers.rocrates.rocrates import make_crate
 from .melody import melody
 from .run import run
 from .list import list
@@ -12,7 +13,6 @@ from .config import configSetup
 from .helpers import melodyLogging
 
 configSetup.setup()#TODO want to user override location if exists
-
 
 melodyLogging.setupLogger()#TODO pass in logging level?
 
