@@ -1,7 +1,7 @@
 import typer
 import sys
 import logging
-
+import runpy
 # from .melody import melody
 from .run import run
 from .list import list
@@ -26,5 +26,8 @@ app.command(help="Pull artifacts from a run")(pull)
 app.command(help="Stop a run")(stop)
 
 
+# if __name__ == "__main__":
+#     app()
+
 if __name__ == "__main__":
-    app()
+    runpy.run_module("melody", run_name="__main__")
