@@ -19,10 +19,12 @@ def createConfigFile():
     home = str(Path.home())
     Path(home + "\.mldy").mkdir(parents=False,exist_ok=True)
     config = """
+[git]
+    directory= '{gitLocation}'    
 [logging]
     file = '{fileLocation}'
-    """.format(fileLocation=home + "\.mldy\melody.log")
-    with open(home + '/.mldy\config.toml','w') as configFile:
+    """.format(fileLocation=home + "\.mldy\melody.log").format(gitLocation=home + "\.mldy\srcControl")
+    with open(home + '/.mldy/config.toml','w') as configFile:
         configFile.write(config)
 
 

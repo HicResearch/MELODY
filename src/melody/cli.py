@@ -9,13 +9,13 @@ from .log import log
 from .pull import pull
 from .stop import stop
 from .config import configSetup
-from .helpers import melodyLogging
+from .helpers import melodyLogging, melodySourceControl
 from .helpers.rocrates.rocrates import make_crate
 
 configSetup.setup()#TODO want to user override location if exists
 
 melodyLogging.setupLogger()#TODO pass in logging level?
-
+melodySourceControl.setupSourceControl()
 
 l = logging.getLogger("MELODY")
 app = typer.Typer()
