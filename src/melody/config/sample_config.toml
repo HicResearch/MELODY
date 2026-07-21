@@ -1,0 +1,36 @@
+[logging]
+file= '~/.mldy/melody.log'
+
+[RO-Crates]
+outputDirectory = "~/.mldy/fl-crate/"
+name="Training a model using the MELODY framework"
+description=""
+
+[[Datasets]]
+source = 'NHS Tayside'
+name = 'NHS Tayside Dermatology Data'
+description = '300 anonymised images from CLIC clinics across Tayside'
+conformsTo = ''
+encodingFormat = ''
+
+[[Datasets]]
+source = 'NHS Oxford'
+name = 'NHS Ofxord Dermatology Data'
+description = '300 anonymised images from dermatology clinics across Oxford'
+conformsTo = ''
+encodingFormat = ''
+
+[[users]]
+firstName = 'James'
+lastName = 'Friel'
+orcid = 'https://orcid.org/0009-0008-4243-5885'
+orgName='University of Dundee'
+orgUrl = 'https://dundee.ac.uk'
+
+[[users]]
+firstName = 'John'
+lastName = 'Doe'
+orcid = 'https://orcid.org/0009-0008-4243-5885'
+orgName='University of Dundee'
+orgROR='https://ror.org/03h2bxq36'
+orgUrl = 'https://dundee.ac.uk'
