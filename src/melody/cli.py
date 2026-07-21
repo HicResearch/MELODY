@@ -1,8 +1,8 @@
 import typer
 import sys
 import logging
-
-from .melody import melody
+import runpy
+# from .melody import melody
 from .run import run
 from .list import list
 from .log import log
@@ -10,9 +10,9 @@ from .pull import pull
 from .stop import stop
 from .config import configSetup
 from .helpers import melodyLogging, melodySourceControl
+from .helpers.rocrates.rocrates import make_crate
 
 configSetup.setup()#TODO want to user override location if exists
-
 
 melodyLogging.setupLogger()#TODO pass in logging level?
 melodySourceControl.setupSourceControl()
@@ -26,5 +26,8 @@ app.command(help="Pull artifacts from a run")(pull)
 app.command(help="Stop a run")(stop)
 
 
+# if __name__ == "__main__":
+#     app()
+
 if __name__ == "__main__":
-    app()
+    runpy.run_module("melody", run_name="__main__")

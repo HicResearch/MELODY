@@ -28,8 +28,13 @@ It is built as a linux standalone application, and can be used simply by running
 ## Configuration
 To maximise the benefit of the MELODY cli,  there are several configuration options to set up:
 <!-- git -->
-<!-- ro-crates -->
+## RO-Crates
+[RO-Crates](https://www.researchobject.org/ro-crate/) are a method to package up your ML jobs with their metadata. To set up RO-Crates to work with MELODY:
+1. Create a .toml config file with your RO-Crate details See the [sample config](./src/melody/config/sample_config.toml) example for more details.
+2. When you next run a MELODY job, an RO-Crate will be generated detailing everything about the run.
 
+## Logging
+MELODY provides advanced logging for FML jobs. These logs are automatically generated and stored in ~/.mldy/melody.log This can be overwiitten via the config file.
 
 # CLI Commands
 ## Run
