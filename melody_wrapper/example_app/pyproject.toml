@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "example-app"
+version = "1.0.0"
+description = "Skeleton Flower app showing the structure required for use with mldy"
+requires-python = ">=3.11"
+dependencies = [
+    "flwr>=1.29.0",
+    "flwrcrate>=0.4.0",
+    "numpy",
+    # TODO: add your ML framework here, e.g. "torch", "scikit-learn"
+]
+
+# ---------------------------------------------------------------------------
+# Flower app configuration
+# ---------------------------------------------------------------------------
+[tool.flwr.app]
+publisher = "example"
+
+[tool.flwr.app.components]
+serverapp = "example_app.server_app:app"
+clientapp = "example_app.client_app:app"
+
+[tool.flwr.app.config]
+num-server-rounds = 3
+# TODO: add any run-time hyperparameters your app needs here, e.g.:
+# learning-rate = 0.01
+
+# ---------------------------------------------------------------------------
+# Local simulation federation — used when you run `mldy run` without a live
+# SuperLink. Increase num-supernodes to simulate more clients.
+# ---------------------------------------------------------------------------
+[tool.flwr.federations]
+default = "local-simulation"
+
+[tool.flwr.federations.local-simulation]
+options.num-supernodes = 2
+
+# ---------------------------------------------------------------------------
+# Optional: map your metric names to semantic URIs so flwrCrate can emit
+# typed PropertyValue entries in the RO-Crate metadata.
+# ---------------------------------------------------------------------------
+[tool.flwrcrate.metric-uris]
+# accuracy = "https://schema.org/accuracy"
+# loss     = "http://www.wikidata.org/entity/Q1234567"
