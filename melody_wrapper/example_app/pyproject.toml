@@ -34,16 +34,32 @@ num-server-rounds = 3
 # Local simulation federation — used when you run `mldy run` without a live
 # SuperLink. Increase num-supernodes to simulate more clients.
 # ---------------------------------------------------------------------------
-[tool.flwr.federations]
-default = "local-simulation"
 
-[tool.flwr.federations.local-simulation]
-options.num-supernodes = 2
+#######################################################################
+# CONFIGURATION MIGRATION NOTICE:
+#
+# What was previously called "federation config" for SuperLink
+# connections in pyproject.toml has been renamed and moved.
+#
+# These settings are now **SuperLink connection configuration**
+# and are defined in the Flower configuration file.
+#
+# The entries below are commented out intentionally and are kept
+# only as a migration reference.
+#
+# Docs: https://flower.ai/docs/framework/ref-flower-configuration.html
+#######################################################################
 
-# ---------------------------------------------------------------------------
-# Optional: map your metric names to semantic URIs so flwrCrate can emit
-# typed PropertyValue entries in the RO-Crate metadata.
-# ---------------------------------------------------------------------------
+# [tool.flwr.federations]
+# default = "local-simulation"
+
+# [tool.flwr.federations.local-simulation]
+# options.num-supernodes = 2
+
+# # ---------------------------------------------------------------------------
+# # Optional: map your metric names to semantic URIs so flwrCrate can emit
+# # typed PropertyValue entries in the RO-Crate metadata.
+# # ---------------------------------------------------------------------------
 [tool.flwrcrate.metric-uris]
 # accuracy = "https://schema.org/accuracy"
 # loss     = "http://www.wikidata.org/entity/Q1234567"

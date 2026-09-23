@@ -9,6 +9,7 @@ def check_flwrcrate_usage(app_path: Path) -> None:
         try:
             source = py_file.read_text(encoding="utf-8")
         except OSError:
+            print('os error')
             continue
         if "FLCrateTracker" in source:
             return
