@@ -4,6 +4,7 @@ Each federated client runs client_fn() to create a Client instance.
 Replace the no-op implementations with your actual training and evaluation logic.
 """
 
+
 import numpy as np
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context, NDArrays
