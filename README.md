@@ -1,58 +1,262 @@
-# MELODY : federated Machine Learning fOr dermatologY
-![MELODy Logo](./assets/MELODY_LIGHT_WIDE.png)
-MELODY is a project funded under the [DARE UK Real World Exemplar Programme](https://www.ukri.org/opportunity/dare-uk-real-world-research-exemplar-programme/). The aim of the project is to develop and test federated machine learning approaches for dermatology research using clinical images from NHS Tayside and Oxford University Hospitals. By training AI models across multiple TREs without centralising data, the project aims to support the development of more inclusive and representative dermatology AI systems.
+# mldy
 
-# Preamble & Terminology
-MELODY uses the [Flower Framework](https://flower.ai/docs/framework/main/en/index.html) to enable federated machine learning (FML).
-Details on how to set up a Flower network are detailed in the [Flower.AI Setup](Flower.AI%20Setup.md) document.
+`mldy` is a command-line wrapper around the [Flower](https://flower.ai) federated
+learning framework. It enforces provenance capture via
+[flwrCrate](https://github.com/eScienceLab/flwrCrate), versions your app code in
+a git repository on every run, and provides built-in access to
+[SACRO-ML](https://github.com/AI-SDC/SACRO-ML) privacy attack assessment.
 
-MELODY uses a custom wrapper around the existing flwr tooling to provide
-* Enhanced auditing
-* Information to improve TRE/SDE Egress
+---
 
+## Requirements
 
-# Benefits
-<!-- WIP -->
-## Enhanced Auditing
-<!-- WIP -->
-## TRE/SDE Egress Information
-<!-- WIP -->
+- Python 3.11 or later
+- [Git](https://git-scm.com) available on your `PATH`
+- A Flower app already set up with `flwrCrate` integrated (see
+  [Flower app requirements](#flower-app-requirements) below)
 
-# Installation & Use
-The MELODY cli tool is available from the [Release](https://github.com/HicResearch/MELODY/releases) section of this Github repo.
-It is built as a linux standalone application, and can be used simply by running
+---
+
+## Installation
+
+```bash
+pip install melody-wrapper
 ```
-./cli
+
+This also installs `flwr` and `sacroml` as dependencies.
+
+---
+
+## Quick start
+
+### 1. Create a config file
+
+Create `mldy.toml` in the directory where you will run `mldy`:
+
+```toml
+[git]
+# Path to an existing git repository where your app code will be versioned.
+# Must already be initialised with `git init`.
+directory = "/path/to/your/snapshot/repo"
+
+[sacroml]
+# Paths used by `mldy attack`. Can be overridden on the command line.
+target_dir    = "./sacroml_target"
+attack_config = "./attack.yaml"
 ```
+
+### 2. Run your Flower app
+
+```bash
+mldy run myapp/
+```
+
+`mldy` will check that your app uses `FLCrateTracker`, copy the app code into
+your snapshot repo, commit it, then hand off to `flwr run`.
+
+### 3. Assess your model
+
+```bash
+mldy gen-target   # one-time setup: describe your model and data
+mldy gen-attack   # one-time setup: choose which attacks to run
+mldy attack       # run SACRO-ML privacy attacks
+```
+
+---
 
 ## Configuration
-To maximise the benefit of the MELODY cli,  there are several configuration options to set up:
-<!-- git -->
-## RO-Crates
-[RO-Crates](https://www.researchobject.org/ro-crate/) are a method to package up your ML jobs with their metadata. To set up RO-Crates to work with MELODY:
-1. Create a .toml config file with your RO-Crate details See the [sample config](./src/melody/config/sample_config.toml) example for more details.
-2. When you next run a MELODY job, an RO-Crate will be generated detailing everything about the run.
 
-## Logging
-MELODY provides advanced logging for FML jobs. These logs are automatically generated and stored in ~/.mldy/melody.log This can be overwiitten via the config file.
+`mldy` reads a TOML config file. It is located in one of two ways:
 
-# CLI Commands
-## Run
-## List
-## Log
-## Pull
-## Stop
+1. **Explicit flag** — pass `--config` (or `-c`) before the subcommand:
+   ```bash
+   mldy --config /path/to/mldy.toml run myapp/
+   ```
+2. **Auto-discovery** — if no flag is given, `mldy` looks for `mldy.toml` in the
+   current directory.
 
+If no config file is found, `mldy` still works but features that require
+config values (git snapshotting, default attack paths) will error unless you
+supply the required values as command-line arguments.
 
+### Full config reference
 
+```toml
+[git]
+# Absolute or relative path to a git repository.
+# `mldy run` copies your app here and commits it before each run.
+directory = "/path/to/snapshot/repo"
 
+[sacroml]
+# Default target directory for `mldy attack` (contains target.yaml + model).
+target_dir = "./sacroml_target"
+# Default attack config file for `mldy attack`.
+attack_config = "./attack.yaml"
+```
 
+---
 
+## Commands
 
-# Contributing
+### `mldy run [APP] [SUPERLINK] [OPTIONS]`
 
-We welcome contributions. Please see our [contributing guide](CONTRIBUTING.md) to get started.
+Runs a Flower app. Before starting, `mldy`:
 
-# Acknowledgements
+1. Checks that the app uses `FLCrateTracker` — the run is **blocked** if it does
+   not (see [Flower app requirements](#flower-app-requirements)).
+2. Copies the app directory into your configured git snapshot repository and
+   creates a commit if anything has changed.
+3. Calls `flwr run` with your original arguments unchanged.
 
-<!-- // WIP -->
+`APP` defaults to `.` (current directory) if omitted. All `flwr run` flags are
+supported and passed through as-is.
+
+```bash
+mldy run                            # run app in current directory
+mldy run myapp/                     # run app in myapp/
+mldy run myapp/ -c run-config.toml  # pass a run config to flwr
+```
+
+---
+
+### `mldy attack [TARGET_DIR] [ATTACK_CONFIG] [OPTIONS]`
+
+Runs SACRO-ML privacy attacks against a trained model.
+
+`TARGET_DIR` is the directory containing a `target.yaml` file and the serialised
+model (generated by `mldy gen-target`). `ATTACK_CONFIG` is the YAML file
+specifying which attacks to run (generated by `mldy gen-attack`).
+
+Both arguments are optional if the corresponding values are set in `mldy.toml`:
+
+```bash
+mldy attack                             # use sacroml.target_dir and sacroml.attack_config from config
+mldy attack ./my_target ./my_attack.yaml  # override both on the command line
+```
+
+---
+
+### `mldy gen-target`
+
+Launches an interactive wizard (provided by SACRO-ML) that asks for your model
+file path, training and test data, and feature metadata. It writes a
+`target.yaml` file and serialises your model ready for attack.
+
+Run this once after your first successful `mldy run`.
+
+```bash
+mldy gen-target
+```
+
+---
+
+### `mldy gen-attack`
+
+Launches an interactive wizard (provided by SACRO-ML) that lets you choose which
+privacy attacks to run and configure their parameters. It writes an `attack.yaml`
+file.
+
+```bash
+mldy gen-attack
+```
+
+---
+
+### All other commands
+
+Any subcommand not listed above is forwarded directly to `flwr`. For example:
+
+```bash
+mldy new          # same as: flwr new
+mldy log          # same as: flwr log
+mldy --help       # same as: flwr --help
+```
+
+---
+
+## Flower app requirements
+
+All apps run via `mldy run` **must** use
+[flwrCrate](https://github.com/eScienceLab/flwrCrate) to capture provenance.
+`mldy` will refuse to run an app that does not.
+
+### How to integrate flwrCrate
+
+**1. Add it to your app's dependencies:**
+
+```bash
+pip install flwrcrate
+```
+
+**2. Wrap your strategy in `server_app.py`:**
+
+```python
+from flwrcrate import FLCrateTracker
+
+strategy = FLCrateTracker(context, your_strategy, output_dir="/path/to/output", ...)
+```
+
+See the [flwrCrate README](https://github.com/eScienceLab/flwrCrate) for the
+full list of `FLCrateTracker` arguments and the complete integration pattern.
+
+---
+
+## Typical workflow
+
+```bash
+# 1. Initialise a snapshot repository (one-time setup)
+git init /path/to/snapshot/repo
+
+# 2. Create your mldy.toml
+cat > mldy.toml << 'EOF'
+[git]
+directory = "/path/to/snapshot/repo"
+
+[sacroml]
+target_dir    = "./sacroml_target"
+attack_config = "./attack.yaml"
+EOF
+
+# 3. Run your federated learning job
+mldy run myapp/
+#  → flwrCrate check passes
+#  → app code committed to snapshot repo
+#  → flwr run executes
+
+# 4. Set up SACRO-ML (one-time, after first successful run)
+mldy gen-target   # point at the model flwrCrate produced
+mldy gen-attack   # choose your attacks
+
+# 5. Run privacy attacks
+mldy attack
+#  → produces a report and vulnerability matrix in your output directory
+```
+
+---
+
+## Troubleshooting
+
+**`mldy: this app does not use FLCrateTracker`**
+
+Your `server_app.py` (or another `.py` file in the app) must import and use
+`FLCrateTracker` from `flwrcrate`. See
+[Flower app requirements](#flower-app-requirements).
+
+**`mldy: git.directory '...' not found`**
+
+The path set in `[git] directory` does not exist. Create it and initialise it as
+a git repository:
+
+```bash
+git init /path/to/snapshot/repo
+```
+
+**`mldy: config file not found: ...`**
+
+The path passed to `--config` does not exist. Check the path or create an
+`mldy.toml` in the current directory.
+
+**`mldy attack: target directory required`**
+
+Either pass `TARGET_DIR` as an argument or set `sacroml.target_dir` in
+`mldy.toml`. Run `mldy gen-target` first if you have not set up the target yet.
