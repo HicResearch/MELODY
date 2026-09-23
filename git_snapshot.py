@@ -21,14 +21,14 @@ def snapshot(flwr_args: list[str], config: dict) -> None:
     git_dir = Path(config.get("git", {}).get("directory", ""))
     if not git_dir or not git_dir.exists():
         print(
-            f"mldy: git.directory '{git_dir}' not found — set it in your mldy.toml",
+            f"melody: git.directory '{git_dir}' not found — set it in your melody.toml",
             file=sys.stderr,
         )
         sys.exit(1)
 
     app_path = resolve_app_path(flwr_args).resolve()
     if not app_path.exists():
-        print(f"mldy: app path not found: {app_path}", file=sys.stderr)
+        print(f"melody: app path not found: {app_path}", file=sys.stderr)
         sys.exit(1)
 
     dest = git_dir / app_path.name
@@ -51,7 +51,7 @@ def snapshot(flwr_args: list[str], config: dict) -> None:
     subprocess.run(
         [
             "git", "-C", str(git_dir),
-            "commit", "-m", f"mldy snapshot {app_path.name}: {timestamp}",
+            "commit", "-m", f"melody snapshot {app_path.name}: {timestamp}",
         ],
         check=True,
     )

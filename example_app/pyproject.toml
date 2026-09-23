@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "example-app"
 version = "1.0.0"
-description = "Skeleton Flower app showing the structure required for use with mldy"
+description = "Skeleton Flower app showing the structure required for use with melody"
 requires-python = ">=3.11"
 dependencies = [
     "flwr>=1.29.0",
@@ -31,7 +31,7 @@ num-server-rounds = 3
 # learning-rate = 0.01
 
 # ---------------------------------------------------------------------------
-# Local simulation federation — used when you run `mldy run` without a live
+# Local simulation federation — used when you run `melody run` without a live
 # SuperLink. Increase num-supernodes to simulate more clients.
 # ---------------------------------------------------------------------------
 

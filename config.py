@@ -9,7 +9,7 @@ else:
     except ImportError:
         import tomli as tomllib  # type: ignore[no-redef]
 
-DEFAULT_CONFIG_FILENAME = "mldy.toml"
+DEFAULT_CONFIG_FILENAME = "melody.toml"
 
 
 def find_and_strip_config_arg(args: list[str]) -> tuple[Path | None, list[str]]:

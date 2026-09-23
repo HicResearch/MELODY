@@ -14,15 +14,15 @@ def run_attacks(args: list[str], config: dict) -> int:
 
     if not target_dir:
         print(
-            "mldy attack: target directory required — pass as an argument or set "
-            "sacroml.target_dir in mldy.toml",
+            "melody attack: target directory required — pass as an argument or set "
+            "sacroml.target_dir in melody.toml",
             file=sys.stderr,
         )
         return 1
     if not attack_config:
         print(
-            "mldy attack: attack config required — pass as an argument or set "
-            "sacroml.attack_config in mldy.toml",
+            "melody attack: attack config required — pass as an argument or set "
+            "sacroml.attack_config in melody.toml",
             file=sys.stderr,
         )
         return 1

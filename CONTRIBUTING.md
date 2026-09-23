@@ -8,7 +8,7 @@ melody_wrapper/
 └── melody_wrapper/
     ├── __init__.py
     ├── cli.py                  # entry point — command dispatch
-    ├── config.py               # config file loading (mldy.toml)
+    ├── config.py               # config file loading (melody.toml)
     ├── checks.py               # pre-run enforcement checks
     ├── git_snapshot.py         # app snapshotting into a git repo
     └── sacroml_runner.py       # SACRO-ML attack subcommands
@@ -22,7 +22,7 @@ cd melody_wrapper
 pip install -e .
 ```
 
-`pip install -e .` registers the `mldy` console script from your local checkout so
+`pip install -e .` registers the `melody` console script from your local checkout so
 changes take effect immediately without reinstalling.
 
 The project requires Python ≥ 3.8. On Python < 3.11 the `tomli` package is
@@ -33,7 +33,7 @@ library `tomllib` is used.
 
 ## Architecture
 
-`mldy` is a thin dispatch layer over three external tools:
+`melody` is a thin dispatch layer over three external tools:
 
 | Tool | Role | Docs |
 |------|------|------|
@@ -41,27 +41,27 @@ library `tomllib` is used.
 | [flwrCrate](https://github.com/eScienceLab/flwrCrate) | Provenance capture (RO-Crate) | repo README |
 | [SACRO-ML (`sacroml`)](https://github.com/AI-SDC/SACRO-ML) | Privacy attack assessment | https://ai-sdc.github.io/SACRO-ML |
 
-### Request flow for `mldy run`
+### Request flow for `melody run`
 
 ```
-mldy run myapp/
+melody run myapp/
   │
-  ├─ config.py  ──  strip --config/-c, load mldy.toml
+  ├─ config.py  ──  strip --config/-c, load melody.toml
   ├─ checks.py  ──  abort if FLCrateTracker not present in app source
   ├─ git_snapshot.py  ──  copy app into git repo, commit if changed
   └─ subprocess  ──  exec `flwr run myapp/` (original args unchanged)
 ```
 
-### Request flow for `mldy attack`
+### Request flow for `melody attack`
 
 ```
-mldy attack [target_dir] [attack.yaml]
+melody attack [target_dir] [attack.yaml]
   │
-  ├─ config.py  ──  strip --config/-c, load mldy.toml
+  ├─ config.py  ──  strip --config/-c, load melody.toml
   └─ sacroml_runner.py  ──  exec `sacroml run <target_dir> <attack.yaml>`
 ```
 
-All other subcommands (e.g. `mldy new`, `mldy log`) are forwarded to `flwr`
+All other subcommands (e.g. `melody new`, `melody log`) are forwarded to `flwr`
 unchanged.
 
 ---
@@ -97,7 +97,7 @@ Scans only the *leading* flags (before the first positional / subcommand) for
 `--config` / `-c`. Stops at the subcommand so that flags belonging to `flwr`
 subcommands (e.g. `flwr run -c run-config.toml`) are never consumed.
 
-Falls back to `mldy.toml` in the current directory if no explicit flag is given.
+Falls back to `melody.toml` in the current directory if no explicit flag is given.
 
 **`load_config(path)`**
 
@@ -145,9 +145,9 @@ taking the first non-flag argument after `"run"`. Defaults to `.`.
    `__pycache__`, `*.pyc`, `.venv`, and `venv`.
 3. Stages all changes with `git add -A`.
 4. Commits only if `git status --porcelain` shows a diff, using the message
-   `mldy snapshot <app_name>: <ISO-8601 timestamp>`.
+   `melody snapshot <app_name>: <ISO-8601 timestamp>`.
 
-The destination repo must already exist and be a valid git repository. `mldy`
+The destination repo must already exist and be a valid git repository. `melody`
 does not create it.
 
 ---
@@ -167,7 +167,7 @@ are interactive wizards that write `target.yaml` and `attack.yaml` to disk.
 
 ---
 
-## Adding a new `mldy` subcommand
+## Adding a new `melody` subcommand
 
 1. Create a module in `melody_wrapper/` for the new behaviour.
 2. Add a branch in `cli.py`:
@@ -197,5 +197,5 @@ Then call it in `cli.py` inside the `subcommand == "run"` block alongside
 ## Adding a new config section
 
 Config is a plain `dict` passed through to every module. Add a new top-level
-table to `mldy.toml` and read it in your module with
+table to `melody.toml` and read it in your module with
 `config.get("my_section", {})`. No schema registration is needed.

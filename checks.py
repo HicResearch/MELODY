@@ -15,7 +15,7 @@ def check_flwrcrate_usage(app_path: Path) -> None:
             return
 
     print(
-        "mldy: this app does not use FLCrateTracker from flwrcrate.\n"
+        "melody: this app does not use FLCrateTracker from flwrcrate.\n"
         "\n"
         "All runs must capture provenance via flwrCrate. To fix this, update\n"
         "your server_app.py:\n"

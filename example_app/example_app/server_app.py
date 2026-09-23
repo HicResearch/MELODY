@@ -4,7 +4,7 @@
 The three flwrCrate touchpoints are marked # [flwrCrate 1/3], # [flwrCrate 2/3],
 and # [flwrCrate 3/3]. Everything else is standard Flower server code.
 
-mldy enforces that FLCrateTracker is present before it will run your app.
+melody enforces that FLCrateTracker is present before it will run your app.
 """
 
 from pathlib import Path
