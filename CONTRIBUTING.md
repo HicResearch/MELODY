@@ -3,22 +3,21 @@
 ## Repository layout
 
 ```
-melody_wrapper/
+MELODY/
 ├── pyproject.toml              # package metadata and dependencies
-└── melody_wrapper/
-    ├── __init__.py
-    ├── cli.py                  # entry point — command dispatch
-    ├── config.py               # config file loading (melody.toml)
-    ├── checks.py               # pre-run enforcement checks
-    ├── git_snapshot.py         # app snapshotting into a git repo
-    └── sacroml_runner.py       # SACRO-ML attack subcommands
+├── __init__.py
+├── cli.py                      # entry point — command dispatch
+├── config.py                   # config file loading (melody.toml)
+├── checks.py                   # pre-run enforcement checks
+├── git_snapshot.py             # app snapshotting into a git repo
+└── sacroml_runner.py           # SACRO-ML attack subcommands
 ```
 
 ## Development setup
 
 ```bash
 git clone <repo>
-cd melody_wrapper
+cd MELODY
 pip install -e .
 ```
 
@@ -169,12 +168,12 @@ are interactive wizards that write `target.yaml` and `attack.yaml` to disk.
 
 ## Adding a new `melody` subcommand
 
-1. Create a module in `melody_wrapper/` for the new behaviour.
+1. Create a module at the repo root for the new behaviour.
 2. Add a branch in `cli.py`:
 
 ```python
 if subcommand == "my-command":
-    from melody_wrapper.my_module import my_function
+    from my_module import my_function
     sys.exit(my_function(args[1:], config))
 ```
 

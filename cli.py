@@ -6,9 +6,6 @@ from config import find_and_strip_config_arg, load_config
 from git_snapshot import snapshot, resolve_app_path
 from sacroml_runner import gen_attack, gen_target, run_attacks
 
-_melody_SUBCOMMANDS = {"attack", "gen-target", "gen-attack"}
-
-
 def main() -> None:
     config_path, args = find_and_strip_config_arg(sys.argv[1:])
 

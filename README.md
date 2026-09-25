@@ -10,7 +10,7 @@ a git repository on every run, and provides built-in access to
 
 ## Requirements
 
-- Python 3.11 or later
+- Python 3.8 or later
 - [Git](https://git-scm.com) available on your `PATH`
 - A Flower app already set up with `flwrCrate` integrated (see
   [Flower app requirements](#flower-app-requirements) below)

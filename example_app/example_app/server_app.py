@@ -1,6 +1,5 @@
 """Server app skeleton.
 
-
 The three flwrCrate touchpoints are marked # [flwrCrate 1/3], # [flwrCrate 2/3],
 and # [flwrCrate 3/3]. Everything else is standard Flower server code.
 
