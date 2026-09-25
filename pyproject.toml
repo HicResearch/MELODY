@@ -1,14 +1,19 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 py-modules = ["cli", "checks", "config", "git_snapshot", "sacroml_runner"]
 
 [project]
-name = "melody-wrapper"
-version = "0.1.0"
+name = "melody-flwr"
+version = "0.0.1"
+authors = [
+    {name = "James Friel", email="jfriel001@dundee.ac.uk"}
+]
 description = "A CLI wrapper for the Flower (flwr) framework"
+readme = "README.md"
+license-files = ["LICEN[CS]E*"]
 requires-python = ">=3.8"
 dependencies = [
     "flwr",
@@ -18,3 +23,7 @@ dependencies = [
 
 [project.scripts]
 melody = "cli:main"
+
+[project.urls]
+Homepage = "https://github.com/HicResearch/MELODY"
+Issues = "https://github.com/HicResearch/MELODY/issues"
