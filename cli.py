@@ -1,10 +1,10 @@
 import subprocess
 import sys
 
-from melody_wrapper.checks import check_flwrcrate_usage
-from melody_wrapper.config import find_and_strip_config_arg, load_config
-from melody_wrapper.git_snapshot import snapshot, resolve_app_path
-from melody_wrapper.sacroml_runner import gen_attack, gen_target, run_attacks
+from checks import check_flwrcrate_usage
+from config import find_and_strip_config_arg, load_config
+from git_snapshot import snapshot, resolve_app_path
+from sacroml_runner import gen_attack, gen_target, run_attacks
 
 _melody_SUBCOMMANDS = {"attack", "gen-target", "gen-attack"}
 

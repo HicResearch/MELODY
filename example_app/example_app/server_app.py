@@ -9,7 +9,6 @@ melody enforces that FLCrateTracker is present before it will run your app.
 
 from pathlib import Path
 
-import numpy as np
 from flwr.app import ArrayRecord, ConfigRecord, Context
 from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg
@@ -32,8 +31,7 @@ def main(grid: Grid, context: Context) -> None:
     # ArrayRecord maps layer names to numpy arrays. The example below uses
     # a single array of zeros with 10 elements.
     # ------------------------------------------------------------------
-    initial_weights = np.zeros(10, dtype=np.float32)
-    arrays = ArrayRecord({"weights": Array("float32",[0,0,0,0,0,0,0,0,0,0],"numpy.ndarray")})
+    arrays = ArrayRecord()
 
     strategy = FedAvg()
 
