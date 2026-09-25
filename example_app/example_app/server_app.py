@@ -33,7 +33,8 @@ def main(grid: Grid, context: Context) -> None:
     # a single array of zeros with 10 elements.
     # ------------------------------------------------------------------
     initial_weights = np.zeros(10, dtype=np.float32)
-    arrays = ArrayRecord({"weights": initial_weights})
+    # arrays = ArrayRecord({"weights": initial_weights})
+    arrays = ArrayRecord({"weights": [0,0,0,0,0,0,0,0,0,0]})
 
     strategy = FedAvg()
 
